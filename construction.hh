@@ -8,6 +8,7 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "G4PVPlacement.hh"
 #include "G4NistManager.hh"
+#include "G4UserLimits.hh"
 #include "detector.hh"
 #include "G4GenericMessenger.hh"
 #include "G4SystemOfUnits.hh"
@@ -31,6 +32,7 @@
 #include "G4Polyhedra.hh"
 #include "G4Colour.hh"
 #include "G4VisAttributes.hh"
+#include "G4Scintillation.hh"
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {

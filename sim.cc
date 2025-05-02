@@ -9,8 +9,18 @@
 #include "DMXPhysicsList.hh"
 #include "action.hh"
 
+#include <fstream>  
+
 int main(int argc, char** argv)
 {
+    // Redirect all output to null stream
+    std::ofstream nullstream("/dev/null");  // On Linux/MacOS, "NUL" on Windows
+    std::streambuf* coutbuf = std::cout.rdbuf();  // Save the original stream buffer
+    std::streambuf* cerrbuf = std::cerr.rdbuf();  // Save the original error buffer
+
+    std::cout.rdbuf(nullstream.rdbuf());  // Redirect G4cout to null stream
+    std::cerr.rdbuf(nullstream.rdbuf());  // Redirect G4cerr to null stream
+
     G4RunManager *runManager = new G4RunManager();
     runManager->SetUserInitialization(new MyDetectorConstruction());
     runManager->SetUserInitialization(new DMXPhysicsList());
@@ -45,6 +55,9 @@ int main(int argc, char** argv)
     ui->SessionStart();
     // delete visManager;
     // delete runManager;
+
+    std::cout.rdbuf(coutbuf);
+    std::cerr.rdbuf(cerrbuf);
 
     return 0;
 }

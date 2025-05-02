@@ -19,6 +19,7 @@ MyRunAction::MyRunAction() {
 
     man->CreateNtuple("Scoring", "Scoring");
     man->CreateNtupleDColumn("fEdep");
+    man->CreateNtupleDColumn("startTime");
     man->FinishNtuple(1);
 
 
@@ -39,12 +40,36 @@ MyRunAction::MyRunAction() {
     man->CreateNtupleDColumn("posZ");
     man->CreateNtupleDColumn("energies");
     man->CreateNtupleDColumn("wavelengths");
+    man->CreateNtupleDColumn("creationTime");
+    man->CreateNtupleDColumn("edep");
     man->FinishNtuple(3);
 
     man->CreateNtuple("Photon Detector Hits", "Photon Detector Hits");
     man->CreateNtupleDColumn("detectorPosX");
     man->CreateNtupleDColumn("detectorPosY");
     man->CreateNtupleDColumn("detectorPosZ");
+    man->CreateNtupleDColumn("globalTime");
+    man->CreateNtupleDColumn("creationTime");
+    man->FinishNtuple(4);
+
+
+    man->CreateNtuple("Scattering", "Scattering");
+    man->CreateNtupleDColumn("posX");
+    man->CreateNtupleDColumn("posY");
+    man->CreateNtupleDColumn("posZ");
+    man->CreateNtupleDColumn("scatterTime");
+    man->CreateNtupleDColumn("edep");
+    man->CreateNtupleSColumn("procName");
+    man->CreateNtupleIColumn("singleScatter");
+    man->FinishNtuple(5);
+
+    man->CreateNtuple("Electrons", "Electrons");
+    man->CreateNtupleDColumn("posX");
+    man->CreateNtupleDColumn("posY");
+    man->CreateNtupleDColumn("posZ");
+    man->CreateNtupleDColumn("scatterTime");
+    man->CreateNtupleDColumn("edep");
+    man->FinishNtuple(6);
 }
 
 MyRunAction::~MyRunAction() {}

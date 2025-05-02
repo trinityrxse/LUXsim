@@ -1,7 +1,6 @@
-/gps/particle gamma
-/gps/energy 1 MeV
-/gps/position 0 -60 0 
-/gps/direction 0 1 0
-/run/beamOn 100
+/gps/particle e-
+/gps/energy 1 keV
+/gps/position 0 0 0 
+/run/beamOn 1000
 
 

@@ -14,9 +14,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4SteppingManager.hh"
 #include "globals.hh"
-
-
-
+#include <map>
 
 
 
@@ -30,6 +28,7 @@ public:
 
 private:
 MyEventAction *fEventAction;
+std::map<G4int, G4int> scatteringCount; 
 
 };
 

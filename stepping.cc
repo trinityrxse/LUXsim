@@ -67,11 +67,12 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
     }
 
     // Store energy deposition in scoring volume (xenon)
-    if (volume == fScoringVolume) {
+    if ((volume == fScoringVolume) && (particleName != "opticalphoton")){
         G4double edep = step->GetTotalEnergyDeposit();
         if (edep > 0) {
             //G4cout << "Edep: " << edep / keV << " keV in step" << step << G4endl;
-            fEventAction->AddEdep(edep / keV);
+            fEventAction->AddEdep(edep);
+            fEventAction->AddGlobalTime(globalTime);
         }
     }
 
@@ -160,9 +161,61 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 
     // G4cout << "posZ " << posZ << ", particle type: " << particleName << G4endl;
 
-    // Store photon hit times at PMTs
-    if ( (particleName == "opticalphoton" || particleName == "gamma") && (posZ > 274 || posZ < -274)) {
+    // Store gamma scattering
+    if (((particleName == "gamma"))  && (volume == fScoringVolume))
+    {
+        G4String processName = "None";
 
+        const G4VProcess* postProc = step->GetPostStepPoint()->GetProcessDefinedStep();
+        if (postProc) {
+            processName = postProc->GetProcessName();
+            //G4cout << "proc nom " << processName << G4endl;
+        }
+    
+        // Check if it's a scattering process of interest
+        if (processName == "compt" || processName == "Rayleigh" || processName == "phot") {
+        // Check if this is the first interaction for this track
+        if (scatteringCount[trackID] == 0) {
+            G4double edep_scat = step->GetTotalEnergyDeposit();
+            // Save to file
+            man->FillNtupleDColumn(5, 0, posX);
+            man->FillNtupleDColumn(5, 1, posY);
+            man->FillNtupleDColumn(5, 2, posZ);
+            man->FillNtupleDColumn(5, 3, globalTime);
+            man->FillNtupleDColumn(5, 4, edep_scat);
+            man->FillNtupleSColumn(5, 5, processName);
+            
+
+            // Mark this track as scattered once
+            scatteringCount[trackID] = 1;
+
+            man->FillNtupleIColumn(5, 6, scatteringCount[trackID]);
+            man->AddNtupleRow(5);
+        } else {
+            // More than one interaction: ignore or delete if needed
+            scatteringCount[trackID]++;
+            return;
+        }
+    }
+
+    }
+    // check yields
+    auto material = step->GetPreStepPoint()->GetMaterial();
+    auto mpt = material->GetMaterialPropertiesTable();
+    auto yield = mpt->GetProperty("SCINTILLATIONYIELD");
+    if (yield) {
+        G4double eDep = step->GetTotalEnergyDeposit();
+        if (eDep > 0){
+            G4double yieldVal = yield->Value(eDep);
+            G4cout << "op photon" << G4endl;
+            G4cout << "Yield at " << eDep / keV << " keV: " << yieldVal << " photons/MeV" << G4endl;
+        }
+    }
+
+
+    // Store photon hit times at PMTs
+    if ( (particleName == "opticalphoton") && (posZ > 290 || posZ < -290)) 
+    {
         // Time and true position
         man->FillNtupleDColumn(3, 0, globalTime);
         man->FillNtupleDColumn(3, 1, posX);
@@ -180,7 +233,49 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
             man->FillNtupleDColumn(3, 5, wavelength);
         }
 
+        //G4cout << "parent= " << parentID << " particle id " << particleID << G4endl;
+           
+
+        // Get the creation time of the photon
+        if (parentID != particleID){
+    
+            man->FillNtupleDColumn(3, 6, globalTime);
+        }
+        
+        G4double edep_ph = step->GetTotalEnergyDeposit();
+        man->FillNtupleDColumn(3, 7, edep_ph);
+
         man->AddNtupleRow(3);  
 
      }
+
+     // Store photon hit times at PMTs
+    if ( (particleName == "e-") && (volume == fScoringVolume)) 
+    {
+        // Time and true position
+        man->FillNtupleDColumn(6, 0, posX);
+        man->FillNtupleDColumn(6, 1, posY);
+        man->FillNtupleDColumn(6, 2, posZ);
+        man->FillNtupleDColumn(6, 3, globalTime);
+
+       // G4cout << "electron = " << track->GetPosition() / mm << " mm, Time: " << globalTime << G4endl;
+
+        // check yields
+        // auto material = step->GetPreStepPoint()->GetMaterial();
+        // auto mpt = material->GetMaterialPropertiesTable();
+        // auto yield = mpt->GetProperty("ELECTRONSCINTILLATIONYIELD");
+        // if (yield) {
+        //     G4double eDep = step->GetTotalEnergyDeposit();
+        //     G4double yieldVal = yield->Value(eDep);
+        //    G4cout << "Yield at " << eDep / keV << " keV: " << yieldVal << " photons/MeV" << G4endl;
+        // }
+
+        
+        G4double edep_e = step->GetTotalEnergyDeposit();
+        man->FillNtupleDColumn(6, 4, edep_e);
+
+        man->AddNtupleRow(6);  
+
+     }
+
 }
