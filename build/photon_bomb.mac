@@ -1,0 +1,19 @@
+# Define the particle type
+/gps/particle opticalphoton
+
+# Photon energy (e.g., 7.1 eV for xenon scintillation)
+/gps/energy 7.1 eV
+
+# Emit from a point, or set a volume (see below)
+/gps/pos/type Volume
+/gps/pos/shape Para
+/gps/pos/centre 0.0 0.0 0.0 cm
+/gps/pos/halfx 2.5 cm
+/gps/pos/halfy 2.5 cm
+/gps/pos/halfz 5.0 cm
+
+# Emit isotropically
+/gps/ang/type iso
+
+# Number of events = number of bombs
+/run/beamOn 10000000

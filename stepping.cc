@@ -76,6 +76,22 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
         }
     }
 
+    G4LogicalVolume *fDetectorVolume = detectorConstruction->GetDetectorVolume();
+    if (track->GetDefinition() == G4OpticalPhoton::Definition()) {
+        // Only do this on the first step of this track
+        if (track->GetCurrentStepNumber() == 1) {
+            G4int trackID = track->GetTrackID();
+            fEventAction->AddPhotonTrackID(trackID);  
+        }
+
+    }
+
+    
+    if ((track->GetDefinition() == G4OpticalPhoton::Definition()) && (volume == fDetectorVolume)) {
+            fEventAction->AddPhotonDetTrackID(trackID);  
+    }
+    
+
     // Check if it's a neutron in the xenon
     if ((particleName == "neutron") && (volume == fScoringVolume) ){
 
@@ -200,21 +216,21 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 
     }
     // check yields
-    auto material = step->GetPreStepPoint()->GetMaterial();
-    auto mpt = material->GetMaterialPropertiesTable();
-    auto yield = mpt->GetProperty("SCINTILLATIONYIELD");
-    if (yield) {
-        G4double eDep = step->GetTotalEnergyDeposit();
-        if (eDep > 0){
-            G4double yieldVal = yield->Value(eDep);
-            G4cout << "op photon" << G4endl;
-            G4cout << "Yield at " << eDep / keV << " keV: " << yieldVal << " photons/MeV" << G4endl;
-        }
-    }
+    // auto material = step->GetPreStepPoint()->GetMaterial();
+    // auto mpt = material->GetMaterialPropertiesTable();
+    // auto yield = mpt->GetProperty("SCINTILLATIONYIELD");
+    // if (yield) {
+    //     G4double eDep = step->GetTotalEnergyDeposit();
+    //     if (eDep > 0){
+    //         G4double yieldVal = yield->Value(eDep);
+    //         G4cout << "op photon" << G4endl;
+    //         G4cout << "Yield at " << eDep / keV << " keV: " << yieldVal << " photons/MeV" << G4endl;
+    //     }
+    // }
 
 
     // Store photon hit times at PMTs
-    if ( (particleName == "opticalphoton") && (posZ > 290 || posZ < -290)) 
+    if ( (particleName == "opticalphoton") && (((posZ > 294) && (posZ < 297 ))|| ((posZ < -294) && (posZ > -297)))) 
     {
         // Time and true position
         man->FillNtupleDColumn(3, 0, globalTime);

@@ -20,6 +20,9 @@ MyRunAction::MyRunAction() {
     man->CreateNtuple("Scoring", "Scoring");
     man->CreateNtupleDColumn("fEdep");
     man->CreateNtupleDColumn("startTime");
+    man->CreateNtupleDColumn("numPhotons");
+    man->CreateNtupleDColumn("numPhotonsAtDet");
+    man->CreateNtupleDColumn("numPhotonsDet");
     man->FinishNtuple(1);
 
 
@@ -49,7 +52,6 @@ MyRunAction::MyRunAction() {
     man->CreateNtupleDColumn("detectorPosY");
     man->CreateNtupleDColumn("detectorPosZ");
     man->CreateNtupleDColumn("globalTime");
-    man->CreateNtupleDColumn("creationTime");
     man->FinishNtuple(4);
 
 

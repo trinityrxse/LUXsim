@@ -43,6 +43,7 @@ public:
     virtual G4VPhysicalVolume * Construct();
 
     G4LogicalVolume *GetScoringVolume() const {return fScoringVolume;} 
+    G4LogicalVolume *GetDetectorVolume() const {return fDetectorVolume;} 
 
 private:
     G4LogicalVolume * logicDetector;
@@ -66,7 +67,7 @@ private:
 
     G4GenericMessenger *fMessenger;
 
-    G4LogicalVolume *fScoringVolume;
+    G4LogicalVolume *fScoringVolume, *fDetectorVolume;
 
     // Implement quantum efficiency for measured PMT spectrum
     G4MaterialPropertiesTable* LoadQuantumEfficiency(const std::string& filename) {

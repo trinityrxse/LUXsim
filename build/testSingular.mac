@@ -1,0 +1,59 @@
+/gps/particle gamma
+/gps/energy 1 keV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 10 keV
+/gps/position 0 0 0 
+/run/beamOn 10
+
+/gps/particle gamma
+/gps/energy 100 keV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 500 keV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 1 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 2 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 5 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 6 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 7 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 8 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 9 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
+
+/gps/particle gamma
+/gps/energy 10 MeV
+/gps/position 0 0 0 
+/run/beamOn 1
